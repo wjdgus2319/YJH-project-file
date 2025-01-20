@@ -32,3 +32,91 @@ $ java com.example.level6.Kiosk
 
 라이센스
 이 프로젝트는 MIT 라이센스를 따릅니다.
+
+구현한 상황 
+레벨 6에서는 장바구니 기능을 추가하여 사용자가 선택한 메뉴를 장바구니에 추가하고, 할인 혜택을 적용하여 주문할 수 있도록 했습니다.
+package com.example.level6;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Kiosk {
+    private List<Menu> menus;
+    private Cart cart;
+
+    public Kiosk(List<Menu> menus) {
+        this.menus = menus;
+        this.cart = new Cart();
+    }
+
+    public void start() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("[ MAIN MENU ]");
+            for (int i = 0; i < menus.size(); i++) {
+                System.out.println((i + 1) + ". " + menus.get(i).getCategoryName());
+            }
+            System.out.println("0. 종료");
+
+            int choice = scanner.nextInt();
+            if (choice == 0) {
+                System.out.println("프로그램을 종료합니다.");
+                break;
+            } else if (choice > 0 && choice <= menus.size()) {
+                Menu selectedMenu = menus.get(choice - 1);
+                System.out.println("[ " + selectedMenu.getCategoryName().toUpperCase() + " MENU ]");
+                selectedMenu.displayMenuItems();
+                System.out.println("0. 뒤로가기");
+
+                int itemChoice = scanner.nextInt();
+                if (itemChoice == 0) {
+                    continue;  // 메인 메뉴로 돌아가기
+                } else if (itemChoice > 0 && itemChoice <= selectedMenu.getMenuItems().size()) {
+                    MenuItem selectedItem = selectedMenu.getMenuItems().get(itemChoice - 1);
+                    System.out.println("선택한 메뉴: " + selectedItem);
+                    System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
+                    System.out.println("1. 확인        2. 취소");
+
+                    int confirm = scanner.nextInt();
+                    if (confirm == 1) {
+                        cart.addItem(selectedItem);
+                    }
+                } else {
+                    System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+                }
+            } else {
+                System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+            }
+
+            if (!cart.items.isEmpty()) {
+                System.out.println("[ ORDER MENU ]");
+                System.out.println("4. Orders       | 장바구니를 확인 후 주문합니다.");
+                System.out.println("5. Cancel       | 진행중인 주문을 취소합니다.");
+
+                int orderChoice = scanner.nextInt();
+                if (orderChoice == 4) {
+                    System.out.println("아래와 같이 주문 하시겠습니까?");
+                    cart.displayItems();
+                    System.out.println("[ Total ]");
+                    System.out.printf("W %.1f%n", cart.getTotal(UserType.일반));  // 기본 사용자 유형을 일반으로 설정
+                    System.out.println("1. 주문      2. 메뉴판");
+
+                    int orderConfirm = scanner.nextInt();
+                    if (orderConfirm == 1) {
+                        System.out.println("할인 정보를 입력해주세요.");
+                        System.out.println("1. 국가유공자 : 10% ");
+                        System.out.println("2. 군인     :  5%");
+                        System.out.println("3. 학생     :  3%");
+                        System.out.println("4. 일반     :  0%");
+
+                        int userTypeChoice = scanner.nextInt();
+                        UserType userType;
+                        switch (userTypeChoice) {
+                            case 1: userType = UserType.국가유공자; break;
+                            case 2: userType = UserType.군인; break;
+                            case 3: userType = UserType.학생; break;
+                            default: userType = UserType.일반; break;
+                        }
+
+                        System.out.printf("주문이 완료되었습니다. 금[_{{{CITATION{{{_1{](https://github.com/mlhaus/open-source-project-2021a/tree/54a127efd4bea5af5f2e1bc623cbd9f2d3c61e89/src%2Fcom%2Fhauschildt%2FMenuItem.java)[_{{{CITATION{{{_2{](https://github.com/vulp/janoinen/tree/5256fbd8a3a8a841fc83df5ac2d0c523fb9021ea/src%2Fmain%2Fjava%2FBeer%2FBeer.java)[_{{{CITATION{{{_3{](https://github.com/vinicius-lds/alura/tree/febbd7df868caf46a713f2e950618f8fa3ef48a5/reflections%2Fprojeto-principal%2Fsrc%2Fbr%2Fcom%2Falura%2Fmodel%2FProduct.java)[_{{{CITATION{{{_4{](https://github.com/LazySleep/Fundtrans/tree/5fb3695b2c24a5bd32443f53fa29a701dd759467/src%2Fcom%2Fmybank%2Ffundtrans%2Fdomain%2FFund.java)[_{{{CITATION{{{_5{](https://github.com/tracksdata/adm-spring/tree/74ed54233182eea0889ec285d31b66fff4f754b3/Spring-WS%2F9-Spring-JDBC%2Fsrc%2Fmain%2Fjava%2Fcom%2Fcts%2Feshop%2Fmodel%2FProduct.java)[_{{{CITATION{{{_6{](https://github.com/linhhm2406/MD2_IOBinary_ProductManagement/tree/e6bc98839fdce7771efe356898c42466f4dfbe36/src%2FProduct.java)
