@@ -48,6 +48,7 @@ $ java com.example.level1.Kiosk
 프로젝트와 관련된 문의 사항이 있을 경우 이메일로 연락주세요. tprpworld01@naver.com
 
 구현한 상황 
+레벨 1에서는 기본적인 메뉴 선택 기능을 구현했습니다. 사용자가 메뉴를 선택하면 해당 메뉴의 정보가 출력됩니다.
 package com.example.level1;
 
 import java.util.ArrayList;
